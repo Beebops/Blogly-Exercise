@@ -1,0 +1,8 @@
+body {
+  background-color: pink;
+}
+
+.avatar {
+  width: 300px;
+  display: block;
+}

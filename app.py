@@ -25,12 +25,12 @@ def redirect_to_users():
 def list_users():
     """Shows list of all users in db"""
     users = User.query.all()
-    return render_template('user-list.html', users=users)
+    return render_template('users/index.html', users=users)
 
 @app.route('/users/new')
 def new_user_form():
     """Shows form to add new user"""
-    return render_template('new-user.html')
+    return render_template('users/new.html')
 
 @app.route('/users/new', methods=['POST'])
 def add_new_user():
@@ -50,13 +50,13 @@ def add_new_user():
 def show_user_details(user_id):
     """Show details about a single user"""
     user = User.query.get_or_404(user_id)
-    return render_template('user-details.html', user=user)
+    return render_template('users/show.html', user=user)
 
 @app.route('/users/<int:user_id>/edit')
 def user_edit_form(user_id):
     """Shows form to edit user"""
     user = User.query.get_or_404(user_id)
-    return render_template('user-edit.html', user=user)
+    return render_template('users/edit.html', user=user)
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])    
 def handle_edit_form(user_id):
