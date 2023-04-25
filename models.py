@@ -29,4 +29,4 @@ class User(db.Model):
     
     def __repr__(self):
         u = self
-        return f"<User id:{u.id} first-name:{u.first_name} last-name:{u.last_name}"
+        return f"<User id:{u.id} first_name:{u.first_name} last_name:{u.last_name}"
