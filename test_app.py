@@ -1,8 +1,11 @@
 from unittest import TestCase
 import unittest
 from app import app
-from test_config import TestingConfig
+#from test_config import TestingConfig
 from models import db, User
+import os
+
+os.environ['flask-blogly'] = 'Test'
 
 # Use test database and don't clutter tests with SQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test_db'
@@ -12,29 +15,32 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['TESTING'] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
-db.drop_all()
-db.create_all()
+with app.app_context():
+  db.drop_all()
+  db.create_all()
 
 class UserViewsTestCase(TestCase):
     """Tests for views for Users"""
 
     def setUp(self):
         """Add sample user"""
-
+        os.environ['flask-blogly'] = 'Test'
         # Create test fixtures
-        User.query.delete()
+        with app.app_context():
+          User.query.delete()
 
-        user = User(first_name='Zapp', last_name='Brannigan',
-        image_url='https://static.wikia.nocookie.net/enfuturama/images/f/fe/Zapp_Brannigan_-_Official_Character_Promo.jpg/revision/latest?cb=20211008101815')
-        db.session.add(user)
-        db.session.commit()
+          user = User(first_name='TestUserFirstName', last_name='TestUserLastName')
+          db.session.add(user)
+          db.session.commit()
 
-        self.user_id = user.id
+          self.user_id = user.id
 
     def tearDown(self):
         """Roll back the transaction so that the database is left in its original state"""
+        with app.app_context():
+          db.session.rollback()
 
-        db.session.rollback()    
+          os.environ.pop('flask-blogly')    
 
     def test_list_users(self):
         with app.test_client() as client:
@@ -42,7 +48,7 @@ class UserViewsTestCase(TestCase):
             html = response.get_data(as_text=True)
 
             self.assertEqual(response.status_code, 200)
-            self.assertIn('Zapp', html)
+            self.assertIn('TestUserFirstName', html)
 
 if __name__ == '__main__':
     unittest.main()  

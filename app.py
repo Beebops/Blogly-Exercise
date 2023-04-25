@@ -5,7 +5,7 @@ from models import db, connect_db, User
 import os
 
 def get_database_uri():
-    if os.environ.get('blogly_test_db') == 'Test':
+    if os.environ.get('flask-blogly') == 'Test':
         return 'postgresql:///blogly_test_db'
     return 'postgresql:///blogly'
 
@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
-connect_db(app)
+#connect_db(app)
 
 from flask_debugtoolbar import DebugToolbarExtension
 app.config['SECRET_KEY'] = "mylittlesecret"
@@ -24,6 +24,9 @@ debug = DebugToolbarExtension(app)
 app.debug = True
 
 # db.create_all()
+with app.app_context():
+    connect_db(app)
+    db.create_all()
 
 @app.route('/')
 def redirect_to_users():
