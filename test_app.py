@@ -50,6 +50,23 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn('TestUserFirstName', html)
 
+    def test_user_edit_form(self):
+      with app.test_client() as client:
+        #  with app.app_context():
+        #   User.query.delete()
+
+        #   user = User(first_name='TestUserFirstName', last_name='TestUserLastName')
+        #   db.session.add(user)
+        #   db.session.commit()
+
+        #   self.user_id = user.id
+
+         response = client.get(f'/users/{user.id}/edit')
+         html = response.get_data(as_text=True)
+
+         self.assertEqual(response.status_code, 200)
+         self.assertIn('TestUserFirstName', html)    
+
 if __name__ == '__main__':
     unittest.main()  
         
