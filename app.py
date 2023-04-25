@@ -2,31 +2,20 @@
 
 from flask import Flask, request, render_template,  redirect
 from models import db, connect_db, User
-import os
-
-def get_database_uri():
-    if os.environ.get('flask-blogly') == 'Test':
-        return 'postgresql:///blogly_test_db'
-    return 'postgresql:///blogly'
 
 app = Flask(__name__)
-app.app_context().push()
-app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-
-#connect_db(app)
 
 from flask_debugtoolbar import DebugToolbarExtension
 app.config['SECRET_KEY'] = "mylittlesecret"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
-app.debug = True
 
-# db.create_all()
-with app.app_context():
-    connect_db(app)
-    db.create_all()
+
+connect_db(app)
+app.app_context().push()
 
 @app.route('/')
 def redirect_to_users():
