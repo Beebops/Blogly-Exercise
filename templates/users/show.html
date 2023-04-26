@@ -5,8 +5,8 @@ content %}
 <h2>{{user.first_name}} {{user.last_name}}</h2>
 <form action="/users/{{user.id}}/delete" method="POST">
   <a href="/users/{{user.id}}/edit" class="link-btn">Edit</a>
-  <a href="/users">Back</a>
-  <button>Delete</button>
+  <a href="/users" class="link-btn">Back</a>
+  <button class="delete-btn">Delete</button>
 </form>
 
 {% endblock %}

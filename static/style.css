@@ -1,8 +1,68 @@
 body {
-  background-color: pink;
+  font-family: 'Rubik', sans-serif;
+  color: hsla(222, 100%, 10%, 1);
 }
 
 .avatar {
   width: 300px;
   display: block;
+}
+
+ul {
+  margin-top: 2rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+a {
+  color: hsla(222, 100%, 10%, 1);
+  text-decoration: none;
+}
+
+button,
+.link-btn {
+  display: inline-block;
+  border: none;
+  padding: 1rem 2rem;
+  margin: 0;
+  text-decoration: none;
+  background: #0069ed;
+  color: #ffffff;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:hover,
+button:focus,
+.link-btn:hover,
+.link-btn:focus {
+  background: #0053ba;
+}
+
+button:focus,
+.link-btn:focus,
+.delete-btn:focus {
+  outline: 1px solid #fff;
+  outline-offset: -4px;
+}
+
+button:active,
+.link-btn:active,
+.delete-btn:active,
+.add-btn:active {
+  transform: scale(0.99);
+}
+
+.delete-btn {
+  background-color: #c00;
+}
+
+.delete-btn:hover,
+.delete-btn:focus {
+  background: #ff6161;
 }
