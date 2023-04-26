@@ -59,8 +59,9 @@ class UserTestCase(TestCase):
 			html = resp.get_data(as_text=True)
 
 			self.assertEqual(resp.status_code, 200)
-			self.assertIn('Farnsworth', html)
-			self.assertIn('www.futurama.com', html)	
+			self.assertIn('Phillip', html)
+			self.assertIn('Fry', html)
+			self.assertIn('www.planetexpress.com', html)	
 
 	def test_delete_user(self):
 		with app.test_client() as client:
@@ -72,9 +73,9 @@ class UserTestCase(TestCase):
 	def test_handle_edit_form(self):
 		with app.test_client() as client:
 			resp = client.post(f'/users/{self.user_id}/edit',
-		      data={'first_name': 'Amy', 'last_name': 'Wong', 'image_url': 'www.futurama.com'})
+		      data={'first_name': 'Phillip', 'last_name': 'Fry', 'image_url': 'www.planetexpress.com'})
 			
 			user = User.query.get(self.user_id)
-			self.assertEqual(user.first_name, 'Amy')
-			self.assertEqual(user.last_name, 'Wong')
-			self.assertEqual(user.image_url, 'www.futurama.com')
+			self.assertEqual(user.first_name, 'Phillip')
+			self.assertEqual(user.last_name, 'Fry')
+			self.assertEqual(user.image_url, 'www.planetexpress.com')
