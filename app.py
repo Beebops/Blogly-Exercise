@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, render_template,  redirect
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 import os
 
 app = Flask(__name__)

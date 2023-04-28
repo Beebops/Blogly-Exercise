@@ -1,12 +1,16 @@
 {% extends 'base.html' %} {% block title %}User List{% endblock %} {% block
 content %}
 
-<img src="{{user.image_url}}" alt="user avatar" class="avatar" />
-<h2>{{user.first_name}} {{user.last_name}}</h2>
-<form action="/users/{{user.id}}/delete" method="POST">
-  <a href="/users/{{user.id}}/edit" class="link-btn">Edit</a>
-  <a href="/users" class="link-btn">Back</a>
-  <button class="delete-btn">Delete</button>
-</form>
-
+<div class="card" style="width: 18rem">
+  <img src="{{user.image_url}}" alt="user avatar" class="card-img-top" />
+  <div class="card-body">
+    <h4 class="card-title h4">{{user.first_name}} {{user.last_name}}</h4>
+    <p class="card-text"></p>
+    <form action="/users/{{user.id}}/delete" method="POST">
+      <a href="/users/{{user.id}}/edit" class="btn btn-primary">Edit</a>
+      <a href="/users" class="btn btn-secondary">Back</a>
+      <button class="btn btn-danger">Delete</button>
+    </form>
+  </div>
+</div>
 {% endblock %}

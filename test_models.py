@@ -1,13 +1,17 @@
 from unittest import TestCase
+import os
+from sqlalchemy import exc
+
+os.environ['DATABASE_URL'] = 'postgresql:///blogly_test_db'
 
 from app import app
 from models import db, User
 
-# Use test database and don't clutter tests with SQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test_db'
 app.config['SQLALCHEMY_ECHO'] = False
+app.config['TESTING'] = True
+app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
-db.drop_all()
 db.create_all()
 
 class UserModelTestCase(TestCase):

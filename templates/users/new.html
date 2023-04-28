@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block title %}User List{% endblock %} {% block
 content %}
 
-<h1>Create User</h1>
+<h1 class="h1">Create User</h1>
 <form action="/users/new" method="POST">
   <p>
     <label for="first_name">First Name</label>
@@ -30,8 +30,8 @@ content %}
       placeholder="Provide an image of this user"
     />
   </p>
-  <button class="link-btn">Add</button>
-  <a href="/users" class="link-btn">Back</a>
+  <button class="btn btn-primary">Add</button>
+  <a href="/users" class="btn btn-secondary">Back</a>
 </form>
 
 {% endblock %}
