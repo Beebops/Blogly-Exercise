@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template,  redirect
+from flask import Flask, request, render_template,  redirect, flash
 from models import db, connect_db, User, Post
 import os
 
@@ -53,11 +53,33 @@ def show_user_details(user_id):
     """Show details about a single user"""
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
-    # this gets me all posts in db, I need just the user's posts
-    # posts = Post.query.all()
     posts = user.posts
 
     return render_template('users/show.html', user=user, full_name=full_name, posts=posts)
+
+# ------ User Edit Form ------
+
+@app.route('/users/<int:user_id>/edit')
+def user_edit_form(user_id):
+    """Shows form to edit user"""
+    user = User.query.get_or_404(user_id)
+    return render_template('users/edit.html', user=user)
+
+@app.route('/users/<int:user_id>/edit', methods=['POST'])    
+def handle_user_edit_form(user_id):
+    """Processes edit form and returns user to users page"""
+    user = User.query.get_or_404(user_id)
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.img_url = request.form['image_url']
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect('/users')
+
+
+ # ------ POSTS ------
 
 @app.route('/users/<int:user_id>/posts/new')
 def show_new_post_form(user_id):
@@ -69,6 +91,7 @@ def show_new_post_form(user_id):
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
 def add_new_post(user_id):
     """ Create a new Post and save to db"""
+    user = User.query.get_or_404(user_id)
     new_post = Post(
        title = request.form['title'],
        content = request.form['content'],
@@ -76,34 +99,39 @@ def add_new_post(user_id):
     
     db.session.add(new_post)
     db.session.commit()
+    flash(f'Post "{new_post}" added.')
     
     return redirect(f'/users/{user_id}')
 
-@app.route('/posts/int:post_id')
+@app.route('/posts/<int:post_id>')
 def show_post(post_id):
     """ Shows a single post"""
-    # this gets me all posts in db, I need just the user's posts
-    posts = Post.query.all()
+    post = Post.query.get_or_404(post_id)
+    
+    return render_template('/posts/show.html', post=post)
 
+@app.route('/posts/<int:post_id>/edit')
+def post_edit_form(post_id):
+    """Shows form to edit post"""
+    post = Post.query.get_or_404(post_id)
 
-@app.route('/users/<int:user_id>/edit')
-def user_edit_form(user_id):
-    """Shows form to edit user"""
-    user = User.query.get_or_404(user_id)
-    return render_template('users/edit.html', user=user)
+    return render_template('/posts/edit.html', post=post)
 
-@app.route('/users/<int:user_id>/edit', methods=['POST'])    
-def handle_edit_form(user_id):
-    """Processes edit form and returns user to users page"""
-    user=User.query.get_or_404(user_id)
-    user.first_name = request.form['first_name']
-    user.last_name = request.form['last_name']
-    user.img_url = request.form['image_url']
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def edit_post(post_id):
+    """Handle form submission for updating an existing post"""
 
-    db.session.add(user)
+    post = Post.query.get_or_404(post_id)
+    post.title = request.form['title']
+    post.content = request.form['content']
+
+    db.session.add(post)
     db.session.commit()
+    flash(f"Post '{post.title}' edited.")
 
-    return redirect('/users')
+    return redirect(f"/users/{post.user_id}")
+
+# ------ Deleting Users and Posts ------
 
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
 def delete_user(user_id):
