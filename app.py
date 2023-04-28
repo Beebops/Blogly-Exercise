@@ -52,7 +52,39 @@ def add_new_user():
 def show_user_details(user_id):
     """Show details about a single user"""
     user = User.query.get_or_404(user_id)
-    return render_template('users/show.html', user=user)
+    full_name = user.get_full_name()
+    # this gets me all posts in db, I need just the user's posts
+    # posts = Post.query.all()
+    posts = user.posts
+
+    return render_template('users/show.html', user=user, full_name=full_name, posts=posts)
+
+@app.route('/users/<int:user_id>/posts/new')
+def show_new_post_form(user_id):
+    """Shows form to add a new post for a user"""
+    user = User.query.get_or_404(user_id)
+    full_name = user.get_full_name()
+    return render_template('users/posts/new.html', user=user, full_name=full_name)
+
+@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+def add_new_post(user_id):
+    """ Create a new Post and save to db"""
+    new_post = Post(
+       title = request.form['title'],
+       content = request.form['content'],
+       user_id = user_id)
+    
+    db.session.add(new_post)
+    db.session.commit()
+    
+    return redirect(f'/users/{user_id}')
+
+@app.route('/posts/int:post_id')
+def show_post(post_id):
+    """ Shows a single post"""
+    # this gets me all posts in db, I need just the user's posts
+    posts = Post.query.all()
+
 
 @app.route('/users/<int:user_id>/edit')
 def user_edit_form(user_id):

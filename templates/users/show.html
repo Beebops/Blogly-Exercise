@@ -4,13 +4,20 @@ content %}
 <div class="card" style="width: 18rem">
   <img src="{{user.image_url}}" alt="user avatar" class="card-img-top" />
   <div class="card-body">
-    <h4 class="card-title h4">{{user.first_name}} {{user.last_name}}</h4>
-    <p class="card-text"></p>
+    <h3 class="card-title h3">{{full_name}}</h3>
+
     <form action="/users/{{user.id}}/delete" method="POST">
       <a href="/users/{{user.id}}/edit" class="btn btn-primary">Edit</a>
       <a href="/users" class="btn btn-secondary">Back</a>
       <button class="btn btn-danger">Delete</button>
     </form>
+    <h4 class="card-title h4">Posts</h4>
+    <ul>
+      {% for post in posts %}
+      <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+      {% endfor %}
+    </ul>
+    <a href="/users/{{user.id}}/posts/new" class="btn btn-primary">Add Post</a>
   </div>
 </div>
 {% endblock %}
