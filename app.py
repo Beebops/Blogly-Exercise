@@ -23,6 +23,8 @@ app.app_context().push()
 def redirect_to_users():
     return redirect('/users')
 
+# ------ User Views ------
+
 @app.route('/users')
 def list_users():
     """Shows list of all users in db"""
@@ -57,8 +59,6 @@ def show_user_details(user_id):
 
     return render_template('users/show.html', user=user, full_name=full_name, posts=posts)
 
-# ------ User Edit Form ------
-
 @app.route('/users/<int:user_id>/edit')
 def user_edit_form(user_id):
     """Shows form to edit user"""
@@ -78,8 +78,16 @@ def handle_user_edit_form(user_id):
 
     return redirect('/users')
 
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    """Delete user from db"""
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
 
- # ------ POSTS ------
+    return redirect('/users')
+
+ # ------ POSTS VIEWS ------
 
 @app.route('/users/<int:user_id>/posts/new')
 def show_new_post_form(user_id):
@@ -129,15 +137,15 @@ def edit_post(post_id):
     db.session.commit()
     flash(f"Post '{post.title}' edited.")
 
-    return redirect(f"/users/{post.user_id}")
+    return redirect(f"/posts/{post_id}")
 
-# ------ Deleting Users and Posts ------
+@app.route('/posts/<int:post_id>/delete', methods=["POST"])
+def delete_post(post_id):
+    """Delete existing post from db"""
+    post = Post.query.get_or_404(post_id)
 
-@app.route('/users/<int:user_id>/delete', methods=['POST'])
-def delete_user(user_id):
-    """Delete user from db"""
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
+    db.session.delete(post)
     db.session.commit()
+    flash(f"Post '{post.title} deleted.")
 
-    return redirect('/users')
+    return redirect(f"/users/{post.user_id}")
