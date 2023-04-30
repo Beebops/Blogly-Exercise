@@ -19,19 +19,20 @@ class User(db.Model):
                    primary_key=True,
                    autoincrement=True)
     
-    first_name = db.Column(db.String(50),
+    first_name = db.Column(db.Text(50),
                            nullable=False)
     
-    last_name = db.Column(db.String(50),
+    last_name = db.Column(db.Text(50),
                           nullable=True)
     
-    image_url = db.Column(db.String(),
+    image_url = db.Column(db.Text(),
                           nullable=False,
                           default=DEFAULT_IMG_URL)
     
-    posts = db.relationship('Post')
+    posts = db.relationship('Post', backref='user', cascade='all, delete-orphan')
     
-    def get_full_name(self):
+    @property
+    def full_name(self):
         return f'{self.first_name} {self.last_name}'
     
     def __repr__(self):
@@ -46,7 +47,7 @@ class Post(db.Model):
                    primary_key=True,
                    autoincrement=True)
 
-    title = db.Column(db.String(75),
+    title = db.Column(db.Text(75),
                       nullable=False)
     
     content = db.Column(db.Text(),
@@ -59,7 +60,11 @@ class Post(db.Model):
     
     author = db.relationship('User')
 
-
+    @property
+    def show_date(self):
+        """Return easy to read formatted date"""
+        return self.created_at.strftime('%a %b %-d  %Y, %-I:%M %p')
+    
     def __repr__(self):
         p = self
         created_at_formatted = p.created_at.astimezone(timezone('US/Eastern')).strftime('%A, %B %d, %Y %I:%M %p')

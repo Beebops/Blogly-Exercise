@@ -47,14 +47,14 @@ def add_new_user():
 
     db.session.add(new_user)
     db.session.commit()
-
+    flash(f"User {new_user.full_name} added.")
     return redirect('/users')
 
 @app.route('/users/<int:user_id>')
 def show_user_details(user_id):
     """Show details about a single user"""
     user = User.query.get_or_404(user_id)
-    full_name = user.get_full_name()
+    full_name = user.full_name
     posts = user.posts
 
     return render_template('users/show.html', user=user, full_name=full_name, posts=posts)
@@ -93,7 +93,7 @@ def delete_user(user_id):
 def show_new_post_form(user_id):
     """Shows form to add a new post for a user"""
     user = User.query.get_or_404(user_id)
-    full_name = user.get_full_name()
+    full_name = user.full_name
     return render_template('users/posts/new.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
@@ -146,6 +146,6 @@ def delete_post(post_id):
 
     db.session.delete(post)
     db.session.commit()
-    flash(f"Post '{post.title} deleted.")
+    #flash(f"Post '{post.title} deleted.")
 
     return redirect(f"/users/{post.user_id}")
