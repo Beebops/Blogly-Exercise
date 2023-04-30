@@ -39,15 +39,15 @@ def new_user_form():
 @app.route('/users/new', methods=['POST'])
 def add_new_user():
     """Adds a new user to db"""
-    new_user = User(
-        first_name = request.form['first_name'],
-        last_name = request.form['last_name'],
-        image_url = request.form['image_url'] or None
-    )
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    image_url = request.form.get('image_url', None)
 
-    db.session.add(new_user)
+    user = User(first_name=first_name, last_name=last_name, image_url=image_url)
+
+    db.session.add(user)
     db.session.commit()
-    flash(f"User {new_user.full_name} added.")
+    flash(f"User {user.full_name} added.")
     return redirect('/users')
 
 @app.route('/users/<int:user_id>')
@@ -69,9 +69,18 @@ def user_edit_form(user_id):
 def handle_user_edit_form(user_id):
     """Processes edit form and returns user to users page"""
     user = User.query.get_or_404(user_id)
-    user.first_name = request.form['first_name']
-    user.last_name = request.form['last_name']
-    user.img_url = request.form['image_url']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    image_url = request.form['image_url']
+
+    if user.first_name != first_name:
+        user.first_name = first_name
+    
+    if user.last_name != last_name:
+        user.last_name = last_name
+
+    if user.image_url != image_url:
+        user.image_url = image_url
 
     db.session.add(user)
     db.session.commit()
