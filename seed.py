@@ -1,7 +1,7 @@
 """Seed file to make sample data for users db."""
 
 from app import app
-from models import User, Post, db
+from models import User, Post, Tag, db
 
 # Create all tables
 db.drop_all()
@@ -23,8 +23,13 @@ p1 = Post(title='Good news, everyone!', content="Several years ago I tried to lo
 p2 = Post(title="Hi, I'm Troy Mcclure", content="You May Remember Me From Such Medical Films As Alice Doesn't Live Anymore And Mommy, What's Wrong With That Man's Face?", author=troy)
 p3 = Post(title="Hi-dilly-ho, neighborinos!", content="I've done everything the Bible says — even the stuff that contradicts the other stuff!", author=ned)
 
+# Add some tags to seed the database
+tag1 = Tag(name='community service')
+tag2 = Tag(name='irony')
+tag3 = Tag(name='good news')
+
 # Add new objects to session, so they'll persist
-db.session.add_all([troy, zapp, farnsworth, ned, leela, p1, p2, p3])
+db.session.add_all([troy, zapp, farnsworth, ned, leela, p1, p2, p3, tag1, tag2, tag3])
 
 # Commit them to db
 db.session.commit()

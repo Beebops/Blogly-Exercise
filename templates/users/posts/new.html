@@ -15,6 +15,23 @@ content %}
     <label for="content">Content</label>
     <textarea name="content" id="content" cols="30" rows="10"></textarea>
   </p>
+
+  <div class="form-check">
+    {% for tag in tags %}
+    <div>
+      <input
+        type="checkbox"
+        class="form-check-input"
+        value="{{ tag.id }}"
+        id="tag_{{tag.id }}"
+        name="tags"
+      />
+      <label for="tag_{{ tag.id }}" class="form-check-label">
+        {{ tag.name }}</label
+      >
+    </div>
+    {% endfor %}
+  </div>
   <a href="/users/{{user.id}}" class="btn btn-secondary">Cancel</a>
   <button class="btn btn-primary">Add</button>
 </form>
