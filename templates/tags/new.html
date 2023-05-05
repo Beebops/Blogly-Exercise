@@ -11,22 +11,6 @@
       <input type="text" name="name" id="name" placeholder="Enter a tag name" />
     </div>
   </div>
-  <div class="form-check form-group row">
-    {% for post in posts %}
-    <div>
-      <input
-        type="checkbox"
-        value="{{ post.id }}"
-        id="post_{{ post.id }}"
-        name="posts"
-        class="form-input"
-      />
-      <label for="post_{{ post.id }}" class="form-check-label"
-        >{{ post.title }}</label
-      >
-    </div>
-    {% endfor%}
-  </div>
 
   <div class="form-group row mt-3">
     <div class="ml-auto mr-3">

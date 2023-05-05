@@ -196,6 +196,12 @@ def new_tag():
 
     return redirect('/tags')
 
+@app.route('/tags/<int:tag_id>')
+def show_tag(tag_id):
+    """Shows the selected tag and a list of posts that are tagged with it"""
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template('tags/show.html', tag=tag)
+
 @app.route('/tags/<int:tag_id>/edit')
 def edit_tag_form(tag_id):
     """Shows form to edit a tag"""

@@ -6,12 +6,12 @@ block content %}
 <small>On {{post.show_date}}</small>
 {% if post.tags %}
 <p>
-  <p>Tags:</p>
+  <b>Tags:</b>
   {% for tag in post.tags %}
-  <a href="/tags/{{ tag.id }}"><p>{{ tag.name }}</p></a>
+  <a href="/tags/{{ tag.id }}">{{ tag.name }}</a>
   {% endfor %}
 </p>
-{% endif%}
+{% endif %}
 
 <form class="mt-2">
   <button
@@ -36,6 +36,5 @@ block content %}
   >
     Delete
   </button>
-
 </form>
 {% endblock %}
